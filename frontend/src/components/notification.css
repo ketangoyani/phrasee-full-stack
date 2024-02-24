@@ -1,0 +1,36 @@
+.notification-container {
+    position: relative;
+}
+
+.notification-dropdown {
+    position: absolute;
+    max-width: 31.5rem;
+    top: 100%;
+    right: 0;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    max-height: 500px;
+    overflow: hidden;
+    transition: overflow-y 0.3s ease;
+    z-index: 1000;
+}
+
+.notification-dropdown:hover {
+    overflow-y: scroll;
+}
+
+.notification-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+.bg-linear-gradient-orange-pink {
+    background-image: linear-gradient(114deg, #FE5000 42%, #FF0B63 106%);
+    background-color: #fe5000;
+}
+
+.avatar {
+    width: 4rem;
+}
