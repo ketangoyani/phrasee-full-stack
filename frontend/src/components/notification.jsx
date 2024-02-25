@@ -35,14 +35,6 @@ const Notification = ({ notification }) => {
         return verb;
     }
 
-    const getNotificationLength = () => {
-        let len = formatUsersList(notification.users).length + 1;
-        len += getVerb().length + 1;
-        len += "your post: ".length;
-        return len
-    }
-
-    const textCurtail = 82-getNotificationLength();
     return (
         <div className="notification-item">
             <div className="d-flex align-items-center">
@@ -52,10 +44,12 @@ const Notification = ({ notification }) => {
                 </div>
                 <div className="flex-grow-0 ms-3 text-secondary">
                     {/* Display formatted user names, notification verb, and post title */}
+                    <span className="wrap-text">
                     <span className="text-primary"><b>{formatUsersList(notification.users)}</b></span>&nbsp;
                     {getVerb()}&nbsp;
                     <b>your post: </b>
-                    "<span>{notification.post.title.slice(0, textCurtail)}{textCurtail > 0 ?"...":""}</span>"
+                    "<span>{notification.post.title}</span>
+                    </span>
                 </div>
             </div>
         </div>
