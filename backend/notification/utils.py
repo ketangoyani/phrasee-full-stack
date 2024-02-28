@@ -1,8 +1,8 @@
 from collections import defaultdict
 import json
 
-from notification.models import Notification, User, Post
-from notification.serializers import PostSerializer, UserSerializer
+from notification.models import Notification, User, Post, Comment
+from notification.serializers import PostSerializer, UserSerializer, CommentSerializer
 
 def load_notifications(file_path):
     """
@@ -45,7 +45,9 @@ def load_notifications(file_path):
                         **user,
                         "avatar_image_name": avatar_image_name
                     }
-                    User.objects.create(**user_data)
+                    user = User.objects.create(**user_data)
+                else:
+                    user = User.objects.get(id=user_id)
 
                 # Extract post information
                 post = notification.get("post")
@@ -55,11 +57,22 @@ def load_notifications(file_path):
                 if not Post.objects.filter(id=post_id):
                     Post.objects.create(**post)
 
+                # Extract comment information
+                comment_id = None
+                if "comment" in notification:
+                    comment = notification.get("comment")
+                    comment_id = comment.get("id")
+
+                    # Create Comment object if it doesn't exist
+                    if not Comment.objects.filter(id=comment_id):
+                        Comment.objects.create(**comment)
+
                 # Create Notification object and add to bulk_list
                 bulk_list.append(
                     Notification(
                         user_id=user_id,
                         post_id=post_id,
+                        comment_id=comment_id,
                         type=notification.get("type")
                     )
                 )
@@ -107,8 +120,12 @@ def generate_aggregated_notifications():
         # Update 'type' and 'post' information if not already set
         aggregated_data[(notification_type, post_id)]["type"] = notification_type
         if not aggregated_data[(notification_type, post_id)]["post"]:
-            post_data = PostSerializer(notification.post).data
-            aggregated_data[(notification_type, post_id)]["post"] = post_data
+            if notification_type == "Like":
+                post_data = PostSerializer(notification.post).data
+                aggregated_data[(notification_type, post_id)]["post"] = post_data
+            else:
+                comment_data = CommentSerializer(notification.comment).data
+                aggregated_data[(notification_type, post_id)]["comment"] = comment_data
 
     # Return a list of aggregated notification data
     return list(aggregated_data.values())

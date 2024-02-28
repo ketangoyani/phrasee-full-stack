@@ -25,6 +25,11 @@ class Post(models.Model):
     id = models.CharField(max_length=34, primary_key=True)
     title = models.CharField(max_length=512)
 
+class Comment(models.Model):
+    id = models.CharField(max_length=34, primary_key=True)
+    commentText = models.CharField(max_length=512)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+
 class Notification(models.Model):
     """
     Model representing a notification in the database.
@@ -39,4 +44,4 @@ class Notification(models.Model):
     type = models.CharField(max_length=10)
     post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-
+    comment = models.ForeignKey(Comment, on_delete=models.SET_NULL, null=True)

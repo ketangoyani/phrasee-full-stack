@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from notification.models import Post, User
+from notification.models import Post, User, Comment
 from backend.utils import build_absolute_url
 from django.templatetags.static import static
 
@@ -8,6 +8,12 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ("id", "title")
+
+# Serializer for the Comment model
+class CommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ("id", "commentText")
 
 # Serializer for the User model
 class UserSerializer(serializers.ModelSerializer):

@@ -48,7 +48,8 @@ const Notification = ({ notification }) => {
                     <span className="text-primary"><b>{formatUsersList(notification.users)}</b></span>&nbsp;
                     {getVerb()}&nbsp;
                     <b>your post: </b>
-                    "<span>{notification.post.title}</span>
+                    "{notification.post && <span>{notification.post.title}</span>}
+                    {notification.comment && <span>{notification.comment.commentText}</span>}
                     </span>
                 </div>
             </div>
